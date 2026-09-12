@@ -28,17 +28,23 @@ class AVL_Tree(object):
     def __init__(self):
         self.root = None
     def insert(self,val):
-        self.root = self._insert(self.root,val)
+        self.root,change = self._insert(self.root,val)
+        if change :
+            print("Not Balance, Rebalance!")
         return self.root
     def _insert(self,node,val):
         if node is None:
-            return TreeNode(val)
+            return TreeNode(val),False
 
         if val < node.val:
-            node.left = self._insert(node.left,val)
+            node.left,change = self._insert(node.left,val)
+        elif val > node.val:
+            node.right,change = self._insert(node.right,val)
         else:
-            node.right = self._insert(node.right,val)
-        return self.rebalance(node)
+            return node,False
+        node, is_rotated = self.rebalance(node)
+        change = change or is_rotated
+        return node,change
     def rotate_left_leaf(self,x):
         y = x.left
         x.left = y.right
@@ -55,20 +61,27 @@ class AVL_Tree(object):
         return y
     def rebalance(self,x,balance=False):
         if x is None:
-            return x
+            return x,False
+        
         x.setheight()
         bf = x.balance()
+        change = False
+
         if bf == 2:
             if x.left.balance() < 0:
                 x.left = self.rotate_right_leaf(x.left)
             x = self.rotate_left_leaf(x)
+            change = True
+
         elif bf == -2:
             if x.right.balance() > 0:
                 x.right = self.rotate_left_leaf(x.right)
             x = self.rotate_right_leaf(x)
+            change = True
+        
         x.setheight()
-        return x
-
+        return x,change
+    
 def printTree90(node, level = 0):
     if node != None:
         printTree90(node.right, level + 1)
