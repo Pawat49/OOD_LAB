@@ -59,10 +59,39 @@ class AVLTree:
         return y
 
     def rebalance(self,x):
-        return
+        if x is None:
+            return x
+        bf = x.balance()
+        x.setheight()
+        if bf == 2:
+            if x.left.balance() < 0:
+                x.left = self.rotate_right_child(x.left)
+            x = self.rotate_left_child(x)
+
+        elif bf == -2:
+            if x.right.balance() > 0:
+                x.right = self.rotate_left_child(x.right)
+            x = self.rotate_right_child(x)
+
+        x.setheight()
+        return x
     
-    def path(self,hp,path):
-        return
+    def path(self,node,hp):
+        final_path,final_hp,died_node = self._path(node,hp)
+        return final_path,final_hp,died_node
+    def _path(self,node,hp,died_node=None,path=""):
+        if node is None:
+            return path[:-3],hp,died_node
+        if hp < 0:
+            return path[:-3],hp,node.val
+
+        hp -= node.val
+
+        path += str(node.val)
+        path,hp,died_node = self._path(node.left,hp,node.val,path+" -> ")
+        # path += " ->"
+        return path,hp,died_node
+        
 
 def printTree90(node, level = 0):
     if node != None:
@@ -73,16 +102,26 @@ def printTree90(node, level = 0):
 inp = input("Enter Input : ").split("/")
 tree = [int(i) for i in inp[0].split()]
 hp = int(inp[1])
-avl_tree = AVLTree()
-if tree == []:
-    print("EMPTY DUNGEON!")
-for t in tree:
-    root = avl_tree.insert(t)
-printTree90(root)
-if hp <= 0:
-    print("GAME OVER!")
-else:
-    print("SUCCESS!")
-    print(f"Remaining HP : {hp}")
-    print(f"Path : ")
-print(tree,hp)
+def DUNGEON(tree,hp):
+    avl_tree = AVLTree()
+    if tree == []:
+        print("EMPTY DUNGEON!")
+        return
+    for t in tree:
+        root = avl_tree.insert(t)
+    # printTree90(root)
+    
+    final_path,final_hp,died_node = avl_tree.path(root,hp)
+    if final_hp <= 0:
+        print("GAME OVER!")
+        print(f"Died Node : {died_node}")
+        print(f"HP at death : {final_hp}")
+        print(f"Path : {final_path}")
+        return
+    else:
+        print("SUCCESS!")
+        print(f"Remaining HP : {final_hp}")
+        print(f"Path : {final_path}")
+        return
+DUNGEON(tree,hp)
+# print(tree,hp)
