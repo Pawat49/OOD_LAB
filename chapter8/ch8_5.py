@@ -155,10 +155,18 @@ def printTree90(node, level = 0):
 
 
 
-def check_binary_search_tree_(root):
+def check_binary_search_tree_(root,min_val=-1,max_val=101):
 
     #code here
-    ...
+    if root is None:
+        return True
+
+    # is_valid = 0 <= root.data <= 100
+    if not(min_val < root.data < max_val):
+        return False
+    left_check = check_binary_search_tree_(root.left,min_val,root.data)
+    right_check = check_binary_search_tree_(root.right,root.data,max_val)
+    return left_check and right_check
 
 tree = Tree()
 
