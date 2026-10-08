@@ -12,25 +12,25 @@ def selectionsort(word_arr,m):
         for last in range(n-1,0,-1):
             big_i = 0
             for i in range(1,last+1):
-                if word_arr[big_i][1] > word_arr[i][1]:
+                if word_arr[i][1] > word_arr[big_i][1]:
                     big_i = i
-                elif word_arr[big_i][1] == word_arr[i][1]:
+                elif word_arr[i][1] == word_arr[big_i][1]:
                     if word_arr[big_i][2] > word_arr[i][2]:
                         big_i = i
-            word_arr[big_i],word_arr[last] = word_arr[last],word_arr[big_i]
+            word_arr[last],word_arr[big_i] = word_arr[big_i],word_arr[last]
     elif m == "V":
         for last in range(n-1,0,-1):
             big_i = 0
             for i in range(1,last+1):
-                if word_arr[big_i][1] > word_arr[i][1]:
+                if word_arr[i][1] > word_arr[big_i][1]:
                     big_i = i
                 elif word_arr[big_i][1] == word_arr[i][1]:
-                    if word_arr[big_i][2] > word_arr[i][2]:
+                    if word_arr[i][2] > word_arr[big_i][2]:
                         big_i = i
                     elif word_arr[big_i][2] == word_arr[i][2]:
                         if word_arr[big_i][3] > word_arr[i][3]:   # เดิมคือ len(...) > len(...)
                             big_i = i
-            word_arr[big_i],word_arr[last] = word_arr[last],word_arr[big_i]
+            word_arr[last],word_arr[big_i] = word_arr[big_i],word_arr[last]
     return word_arr
 def weight_word(word_jaa):
     weight = {'a': 1,'b': 2,'c': 3,'d': 4,'e': 5,'f': 6,'g': 7,'h': 8,'i': 9,'j': 10
@@ -70,9 +70,9 @@ if mode == "W":
         word_with_weight.append(weight_w)
     # print(word_with_weight)
     sort_word_with_weight = selectionsort(word_with_weight,mode)
-    # print(sort_word_with_weight)
+    print(sort_word_with_weight)
     n = len(sort_word_with_weight)
-    for i in sort_word_with_weight[-1::-1]:
+    for i in sort_word_with_weight:
         print(i[0],end=" ")
 elif mode == "V":
     for w in word:
@@ -82,5 +82,5 @@ elif mode == "V":
     sort_word_with_weight = selectionsort(word_with_weight,mode)
     # print(sort_word_with_weight)
     n = len(sort_word_with_weight)
-    for i in sort_word_with_weight[-1::-1]:
+    for i in sort_word_with_weight:
         print(i[0],end=" ")
