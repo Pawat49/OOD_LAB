@@ -26,13 +26,13 @@ print("== results ==")
 n = len(team_list)
 for last in range(n-1,0,-1):
     big_i = 0
-    for j in range(1,last+1):
-        if team_list[big_i]["points"] > team_list[j]["points"]:
-            big_i = j
-        elif team_list[big_i]["points"] == team_list[j]["points"]:
-            if team_list[big_i]["GD"] > team_list[j]["GD"]:
-                big_i = j
+    for i in range(1,last+1):
+        if team_list[i]["points"] > team_list[big_i]["points"]:
+            big_i = i
+        elif team_list[i]["points"] == team_list[big_i]["points"]:
+            if team_list[i]["GD"] > team_list[big_i]["GD"]:
+                big_i = i
         team_list[last],team_list[big_i] = team_list[big_i],team_list[last]
 
-for team_jaa in team_list:
+for team_jaa in team_list[-1::-1]:
     print([team_jaa["name"],{'points': team_jaa["points"]},{'gd': team_jaa["GD"]}])
